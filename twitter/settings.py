@@ -25,8 +25,11 @@ SECRET_KEY = 'li^^5m0*k8sb@le51s@xi1=zq4q+y!5zz8_v%=(v!0-t@-o6-i'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# 指的是服务器在宿主机眼里的地址
+ALLOWED_HOSTS = ['127.0.0.1', '192.168.33.10', 'localhost']
 
+# 指的是宿主机在服务器眼里的地址
+INTERNAL_IPS = ['10.0.2.2']
 
 # Application definition
 
@@ -38,11 +41,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    "debug_toolbar",
+
     # third party
     'rest_framework',
 
     # project apps
     'accounts',
+    'tweets',
 ]
 
 REST_FRAMEWORK = {
@@ -58,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'twitter.urls'
@@ -113,6 +120,26 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# 在控制台输出mysql语句
+
+LOGGING = {
+    'version' : 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
+    }
+}
 
 
 # Internationalization
