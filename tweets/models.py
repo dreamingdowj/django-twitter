@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from utils.time_helpers import utc_now
 
+
 class Tweet(models.Model):
     # 帖子是谁发的
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, help_text='谁发了这个帖子')
@@ -9,6 +10,10 @@ class Tweet(models.Model):
 
     # auto_now_add 表示只在创建的时候更新
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        index_together = (('user', 'created_at'),)
+        ordering = ('user', '-created_at')
 
     @property
     def hours_to_now(self):
