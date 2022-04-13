@@ -24,6 +24,7 @@ class TweetViewSet(viewsets.GenericViewSet,
         """
         重载 list 方法，不列出所有 tweets，必须要求指定 user_id 作为筛选条件
         """
+
         if 'user_id' not in request.query_params:
             return Response('missing user_id', status=400)
 
@@ -33,6 +34,7 @@ class TweetViewSet(viewsets.GenericViewSet,
         # order by created_at desc
         # 这句 SQL 查询会用到 user 和 created_at 的联合索引
         # 单纯的 user 索引是不够的
+        # user_id以url 查询参数的形式出现的url的?号后面
         tweets = Tweet.objects.filter(
             user_id=request.query_params['user_id']
         ).order_by('-created_at')
