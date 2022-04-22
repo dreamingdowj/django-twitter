@@ -22,6 +22,7 @@ class FriendshipViewSet(viewsets.GenericViewSet):
     serializer_class = FriendshipSerializerForCreate
     queryset = User.objects.all()
 
+    # detail:想要操作一个人
     @action(methods=['GET'], detail=True, permission_classes=[AllowAny])
     def followers(self, request, pk):
         # Get /api/friendships/1/flowers
@@ -44,6 +45,8 @@ class FriendshipViewSet(viewsets.GenericViewSet):
     # 当前用户关注其他用户
     @action(methods=['POST'], detail=True, permission_classes=[IsAuthenticated])
     def follow(self, request, pk):
+        # 如果follow一个不存在的用户，返回404
+        self.get_object();
         # 特殊判断重复 follow 的情况（比如前端猛点好多少次 follow)
         # 静默处理，不报错，因为这类重复操作因为网络延迟的原因会比较多，没必要当做错误处理
         if Friendship.objects.filter(from_user=request.user, to_user=pk).exists():

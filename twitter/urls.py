@@ -23,6 +23,7 @@ from tweets.api.views import TweetViewSet
 from friendships.api.views import FriendshipViewSet
 from newsfeeds.api.views import NewsFeedViewSet
 
+# router的内部逻辑：get这个地址：找到对应viewset的list方法；post这个地址：找到对应的create方法
 router = routers.DefaultRouter()
 router.register(r'api/users', UserViewSet)
 router.register(r'api/accounts', AccountViewSet, basename='accounts')

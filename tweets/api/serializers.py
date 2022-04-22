@@ -18,6 +18,7 @@ class TweetSerializerForCreate(serializers.ModelSerializer):
         model = Tweet
         fields = ('content',)
 
+    # 执行TweetSerializerForCreate.save()时 会自动调用create
     def create(self, validated_data):
         user = self.context['request'].user
         content = validated_data['content']

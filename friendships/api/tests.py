@@ -31,6 +31,8 @@ class FriendshipApiTests(TestCase):
             Friendship.objects.create(from_user=self.dongxie, to_user=following)
 
     def test_follow(self):
+
+
         url = FOLLOW_URL.format(self.linghu.id)
 
         # 需要登录才能 follow 别人
