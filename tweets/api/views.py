@@ -7,6 +7,13 @@ from newsfeeds.services import NewsFeedService
 from utils.decorators import required_params
 
 
+# POST          /api/comments/              ->creat
+# GET           /api/comments/?tweet_id=1   ->list
+# GET           /api/comments/1/            ->retrive(单个)
+# DELETE        /api/comments/1/            ->destory
+# PATCH         /api/comments/1/            ->partial_update
+# PUT           /api/comments/1/            ->update
+
 class TweetViewSet(viewsets.GenericViewSet,
                    viewsets.mixins.CreateModelMixin,
                    viewsets.mixins.ListModelMixin):
