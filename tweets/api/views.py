@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
-from tweets.api.serializers import TweetSerializer, TweetSerializerForCreate, TweetSerializerWithComments
+from tweets.api.serializers import TweetSerializer, TweetSerializerForCreate, TweetSerializerForDetail
 from tweets.models import Tweet
 from newsfeeds.services import NewsFeedService
 from utils.decorators import required_params
@@ -48,7 +48,11 @@ class TweetViewSet(viewsets.GenericViewSet,
         tweets = Tweet.objects.filter(
             user_id=request.query_params['user_id']
         ).order_by('-created_at')
-        serializer = TweetSerializer(tweets, many=True)
+        serializer = TweetSerializer(
+            tweets,
+            context={'request': request},
+            many=True,
+        )
         # 一般来说 json 格式的 response 默认都要用 hash 的格式
         # 而不能用 list 的格式（约定俗成）
         return Response({'tweets': serializer.data})
@@ -57,7 +61,7 @@ class TweetViewSet(viewsets.GenericViewSet,
         # <HOMEWORK 1> 通过某个 query 参数 with_all_comments 来决定是否需要带上所有 comments
         # <HOMEWORK 2> 通过某个 query 参数 with_preview_comments 来决定是否需要带上前三条 comments
         tweet = self.get_object()
-        return Response(TweetSerializerWithComments(tweet).data)
+        return Response(TweetSerializerForDetail(tweet, context={'request': request}).data)
 
     def create(self, request, *args, **kwargs):
         """
@@ -75,4 +79,4 @@ class TweetViewSet(viewsets.GenericViewSet,
             }, status=400)
         tweet = serializer.save()
         NewsFeedService.fanout_to_followers(tweet)
-        return Response(TweetSerializer(tweet).data, status=201)
+        return Response(TweetSerializer(tweet, context={'request': request}).data, status=201)
