@@ -25,7 +25,7 @@ class TweetViewSet(viewsets.GenericViewSet,
 
     # 权限：如果是list界面，所有人都可以登录；其他界面，只给有权限的人
     def get_permissions(self):
-        if self.action == 'list':
+        if self.action in ['list', 'retrieve']:
             return [AllowAny()]
         return [IsAuthenticated()]
 
