@@ -6,6 +6,8 @@ from tweets.models import Tweet
 
 class NotificationService(object):
 
+    # classmethod 适用于直接调用方法：NotificationService.send_like_notification
+    # property    适用于不想带()
     @classmethod
     def send_like_notification(cls, like):
         target = like.content_object

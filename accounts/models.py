@@ -27,7 +27,7 @@ def get_profile(user):
     if hasattr(user, '_cached_user_profile'):
         return getattr(user, '_cached_user_profile')
     profile, _ = UserProfile.objects.get_or_create(user=user)
-    # 使用 user 对象的属性进行缓存(cache)，避免多次调用同一个 user 的 profile 时
+    # 使用 user 对象的属性(内存)进行缓存(cache)，避免多次调用同一个 user 的 profile 时
     # 重复的对数据库进行查询
     setattr(user, '_cached_user_profile', profile)
     return profile
