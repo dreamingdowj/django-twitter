@@ -10,6 +10,7 @@ from friendships.api.serializers import (
 )
 from django.contrib.auth.models import User
 from friendships.api.paginations import FriendshipPagination
+from friendships.services import FriendshipService
 
 
 class FriendshipViewSet(viewsets.GenericViewSet):
@@ -111,3 +112,4 @@ class FriendshipViewSet(viewsets.GenericViewSet):
 
     def list(self, request):
         return Response({'message': 'this is friendships'})
+
