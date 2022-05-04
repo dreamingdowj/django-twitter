@@ -24,9 +24,7 @@ class UserSerializerWithProfile(UserSerializer):
 
 
 class UserSerializerForTweet(UserSerializerWithProfile):
-    class Meta:
-        model = User
-        fields = ('id', 'username')
+    pass
 
 
 class UserSerializerForLike(UserSerializerWithProfile):
