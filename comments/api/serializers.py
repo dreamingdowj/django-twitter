@@ -30,7 +30,6 @@ class CommentSerializer(serializers.ModelSerializer):
         return LikeService.has_liked(self.context['request'].user, obj)
 
 
-
 class CommentSerializerForCreate(serializers.ModelSerializer):
     # 这两项必须手动添加
     # 因为默认 ModelSerializer 里只会自动包含 user 和 tweet 而不是 user_id 和 tweet_id
