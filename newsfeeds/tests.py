@@ -47,3 +47,12 @@ class NewsFeedServiceTests(TestCase):
 
         feeds = NewsFeedService.get_cached_newsfeeds(self.linghu.id)
         self.assertEqual([f.id for f in feeds], [feed2.id, feed1.id])
+
+
+class NewsFeedTaskTests(TestCase):
+
+    def setUp(self):
+        super(NewsFeedTaskTests, self).setUp()
+        self.linghu = self.create_user('linghu')
+        self.dongxie = self.create_user('dongxie')
+
