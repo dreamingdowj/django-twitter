@@ -51,7 +51,7 @@ class RedisHelper:
 
         conn.ltrim(key, 0, settings.REDIS_LIST_LENGTH_LIMIT - 1)
 
-
+    # key: tweet.likes_counts.2
     @classmethod
     def get_count_key(cls, obj, attr):
         return '{}.{}:{}'.format(obj.__class__.__name__, attr, obj.id)
