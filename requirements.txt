@@ -10,3 +10,4 @@ redis~=4.2.2
 python-dateutil~=2.8.2
 celery~=5.1.2
 kombu~=5.1.0
+django-ratelimit==3.0.1

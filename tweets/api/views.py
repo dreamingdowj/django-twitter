@@ -7,6 +7,8 @@ from newsfeeds.services import NewsFeedService
 from utils.decorators import required_params
 from utils.paginations import EndlessPagination
 from tweets.services import TweetService
+from django.utils.decorators import method_decorator
+from ratelimit.decorators import ratelimit
 
 
 # POST          /api/comments/              ->creat
@@ -33,6 +35,7 @@ class TweetViewSet(viewsets.GenericViewSet,
         return [IsAuthenticated()]
 
     @required_params(params=['user_id'])
+    @method_decorator(ratelimit(key='user_or_ip', rate='5/s', method='GET', block=True))
     def list(self, request, *args, **kwargs):
         """
         重载 list 方法，不列出所有 tweets，必须要求指定 user_id 作为筛选条件
@@ -74,12 +77,14 @@ class TweetViewSet(viewsets.GenericViewSet,
         # return Response({'tweets': serializer.data})
         return self.get_paginated_response(serializer.data)
 
+    @method_decorator(ratelimit(key='user_or_ip', rate='5/s', method='GET', block=True))
     def retrieve(self, request, *args, **kwargs):
         # <HOMEWORK 1> 通过某个 query 参数 with_all_comments 来决定是否需要带上所有 comments
         # <HOMEWORK 2> 通过某个 query 参数 with_preview_comments 来决定是否需要带上前三条 comments
         tweet = self.get_object()
         return Response(TweetSerializerForDetail(tweet, context={'request': request}).data)
 
+    @method_decorator(ratelimit(key='user', rate='5/m', method='POST', block=True))
     def create(self, request, *args, **kwargs):
         """
         重载 create 方法，因为需要默认用当前登录用户作为 tweet.user
